@@ -2,7 +2,7 @@
     "name": "moham/micro-framework",
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "App/"
         }
     },
     "authors": [
@@ -11,5 +11,7 @@
             "email": "mvalizadeh.e68@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
 }
