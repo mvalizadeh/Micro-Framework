@@ -18,3 +18,10 @@ function dd($var)
     var_dump($var);
     exit;
 }
+
+
+function viwe($path)
+{
+    $path = BASE_PATH . '/views/' . str_replace('.', '/', $path) . '.php';
+    include_once $path;
+}
