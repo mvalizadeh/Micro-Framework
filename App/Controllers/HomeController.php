@@ -6,6 +6,9 @@ class HomeController
 {
     public function index()
     {
-        echo "Hi from HomeController";
+        $data = [
+            'tasks' => ['task-1' => 'task-1', 'task-2' => 'task-2']
+        ];
+        viwe('home',$data);
     }
 }

@@ -20,8 +20,9 @@ function dd($var)
 }
 
 
-function viwe($path)
+function viwe($path, $data = [])
 {
+    extract($data);
     $path = BASE_PATH . '/views/' . str_replace('.', '/', $path) . '.php';
     include_once $path;
 }
