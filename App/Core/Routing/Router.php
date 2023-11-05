@@ -18,14 +18,17 @@ class Router
         $this->request = new Request();
         $this->routes = Route::routes();
         $this->currentRoute = $this->findRoute($this->request) ?? null;
-        $this->runRouteMiddleware();
+        // $this->runRouteMiddleware();
     }
 
-    private function runRouteMiddleware(){
-        $middlewares = $this->currentRoute['middleware'];
-        foreach($middlewares as $middleware){
-            $middlewareClass = new $middleware;
-            $middlewareClass->handle();
+    private function runRouteMiddleware()
+    {
+        if (!is_null($this->currentRoute['middleware'])) {
+            $middlewares = $this->currentRoute['middleware'];
+            foreach ($middlewares as $middleware) {
+                $middlewareClass = new $middleware;
+                $middlewareClass->handle();
+            }
         }
     }
 
@@ -35,8 +38,27 @@ class Router
             if (in_array($request->method(), $route['methods']) && $request->uri() == $route['uri']) {
                 return $route;
             }
+            if ($this->regex_matched($route)) {
+                return $route;
+            }
         }
         return null;
+    }
+
+    public function regex_matched($route)
+    {
+        global $request;
+        $pattern = "/^" . str_replace(['/', '{', '}'], ['\/', '(?<', '>[-%\w]+)'], $route['uri']) . "$/";
+        $result = preg_match($pattern, $this->request->uri(), $matches);
+        if (!$result) {
+            return false;
+        }
+        foreach ($matches as $key => $value) {
+            if (!is_int($key)) {
+                $request->add_route_param($key, $value);
+            }
+        }
+        return true;
     }
 
     public function dispatch404()

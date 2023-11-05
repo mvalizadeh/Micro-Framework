@@ -17,4 +17,5 @@ Route::add(['get','post'],'/admin',function(){
     echo "welcome to admin";
 });
 
-Route::get('/','controller@index');
+// Route::get('/','controller@index');
+Route::get('/post/{slug}','HomeController@index');
