@@ -1,0 +1,7 @@
+vendor
+.idea
+.vscode
+demo/cache
+.phpunit.result.cache
+.DS_store
+.phpunit.cache

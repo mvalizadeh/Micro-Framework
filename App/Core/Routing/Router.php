@@ -4,6 +4,7 @@ namespace App\Core\Routing;
 
 use App\Core\Request;
 
+
 class Router
 {
     private $request;
@@ -17,7 +18,15 @@ class Router
         $this->request = new Request();
         $this->routes = Route::routes();
         $this->currentRoute = $this->findRoute($this->request) ?? null;
-        // var_dump($this->currentRoute);
+        $this->runRouteMiddleware();
+    }
+
+    private function runRouteMiddleware(){
+        $middlewares = $this->currentRoute['middleware'];
+        foreach($middlewares as $middleware){
+            $middlewareClass = new $middleware;
+            $middlewareClass->handle();
+        }
     }
 
     public function findRoute(Request $request)
